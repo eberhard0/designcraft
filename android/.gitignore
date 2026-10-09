@@ -1,0 +1,9 @@
+# Build outputs and the cargo-ndk output (rebuilt by CI; see android/README.md).
+build/
+app/build/
+app/src/main/jniLibs/
+.gradle/
+local.properties
+*.iml
+.idea/
+.kotlin/

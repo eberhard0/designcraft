@@ -1,0 +1,7 @@
+<resources>
+    <!-- No action bar; a dark window so the first frame matches the Pro theme. -->
+    <style name="Theme.DesignCraft" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+</resources>
