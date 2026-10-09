@@ -59,7 +59,13 @@ class MainActivity : GameActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         hideSystemBars()
+        deliverIntent(intent)
     }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        deliverIntent(intent)
+    }
+
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
@@ -73,6 +79,28 @@ class MainActivity : GameActivity() {
             hide(WindowInsetsCompat.Type.systemBars())
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
+    }
+
+    /** A file opened (VIEW) or shared (SEND) from another app: hand its bytes to the app. */
+    private fun deliverIntent(intent: Intent?) {
+        if (intent == null) return
+        @Suppress("DEPRECATION")
+        val shared: Uri? = intent.getParcelableExtra(Intent.EXTRA_STREAM)
+        val uri: Uri = when (intent.action) {
+            Intent.ACTION_VIEW -> intent.data
+            Intent.ACTION_SEND -> shared
+            else -> null
+        } ?: return
+        Thread {
+            try {
+                val name = displayName(uri) ?: "document"
+                val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                if (bytes == null) toast("Couldn't read $name") else nativeDeliverFile(name, bytes)
+            } catch (e: Exception) {
+                Log.e(TAG, "open failed", e)
+                toast("Couldn't open the file: ${e.message}")
+            }
+        }.start()
     }
 
     // ---- Called from Rust (any thread) --------------------------------------------------------

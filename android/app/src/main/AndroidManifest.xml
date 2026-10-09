@@ -25,6 +25,27 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Open files of the types this app edits from Files, mail and browsers. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="application/vnd.adobe.indesign-idml-package" />
+                <data android:mimeType="application/pdf" />
+                <data android:mimeType="image/svg+xml" />
+                <data android:mimeType="application/epub+zip" />
+            </intent-filter>
+            <!-- Share a file to this app. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/vnd.adobe.indesign-idml-package" />
+                <data android:mimeType="application/pdf" />
+                <data android:mimeType="image/svg+xml" />
+                <data android:mimeType="application/epub+zip" />
+            </intent-filter>
         </activity>
     </application>
 </manifest>
